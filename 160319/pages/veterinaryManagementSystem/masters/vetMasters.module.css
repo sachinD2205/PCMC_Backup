@@ -1,0 +1,50 @@
+.main {
+  padding: 3%;
+}
+
+.title {
+  background-color: #1976d2;
+  color: white;
+  padding: 25px;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 500;
+  font-size: larger;
+  border-radius: 20px;
+}
+
+.subTitle {
+  background-color: #1976d2;
+  color: white;
+  margin-top: 20px;
+  padding: 10px 15px;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 500;
+  font-size: medium;
+  border-radius: 10px;
+}
+
+.table {
+  width: 100%;
+  /* margin-top: 5vh; */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.buttons {
+  margin-top: 10vh;
+  display: flex;
+  justify-content: space-around;
+}

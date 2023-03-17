@@ -1,0 +1,74 @@
+.main {
+  /* padding: 5px; */
+  display: flex;
+  /* border: 1px solid black; */
+  justify-content: center;
+  flex-direction: column;
+  /* background-color: aqua; */
+}
+.fpaper {
+  padding: 5px;
+  display: flex;
+}
+.spaper {
+  padding: 5px;
+}
+
+.btn {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10vh;
+  justify-content: space-evenly;
+}
+.small {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+.addbtn {
+  display: flex;
+  justify-content: flex-end;
+  margin: 2vh;
+  margin-right: 40px;
+}
+.row {
+  margin-top: 5vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.second {
+  display: flex;
+  justify-content: space-evenly;
+}
+.paperCenter {
+  display: flex;
+  justify-content: center;
+}
+.tableButton {
+  display: flex;
+  justify-content: space-evenly;
+}
+.Button1 {
+  display: flex;
+  margin-bottom: 5px;
+}
+.two {
+  display: flex;
+  margin-left: 7vh;
+}
+.date {
+  margin-right: 4vw;
+  margin: 4vw;
+}
+.tbl {
+  margin-top: 7vh;
+  margin-left: 8vw;
+  border: 1px solid black;
+  width: 80%;
+  height: 50%;
+}
+.bookingTable {
+  /* margin-top: 20vh; */
+  padding: 4vw;
+}
