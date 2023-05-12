@@ -1,0 +1,261 @@
+[33mcommit 7ba4ee7902f85c3aa1966ee5e878ca5671023f1a[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: a733c3a6 add3844d
+Author: Bhagyashree2212 <bdeokate22@gmail.com>
+Date:   Tue Apr 11 15:01:04 2023 +0530
+
+    Merge branch 'main' of https://github.com/Techlead-India/pcmc-front-end
+
+[33mcommit a733c3a6b0be8c79741d7b512bebba8427c21614[m
+Author: Bhagyashree2212 <bdeokate22@gmail.com>
+Date:   Tue Apr 11 14:46:13 2023 +0530
+
+    SP
+
+[33mcommit add3844d2e17f713791d8dd2b2f9e0a7df46fdb9[m
+Merge: 5d339712 30a97805
+Author: IceCYrip <karansable16@gmail.com>
+Date:   Tue Apr 11 13:13:48 2023 +0530
+
+    Merge branch 'main' of https://github.com/Techlead-India/pcmc-front-end
+
+[33mcommit 5d33971286d0beaccff0874c2cbe8ed7027aaacb[m
+Author: IceCYrip <karansable16@gmail.com>
+Date:   Tue Apr 11 13:13:08 2023 +0530
+
+    vms dashboard count fixed
+
+[33mcommit 30a978052fcd5ac41b3e622c744ff7104ef17571[m
+Author: PratikshaKadam2999 <pratiksha@Upperthrust.com>
+Date:   Tue Apr 11 12:28:10 2023 +0530
+
+    "cfcMst"
+
+[33mcommit 8732be8fb688f2ea382244d7307276d456dbf270[m
+Author: Shivani <ShivaniCbo@smarttouchindia.in>
+Date:   Tue Apr 11 12:01:37 2023 +0530
+
+    Shivani- remove old new scheme page
+
+[33mcommit e128bfde5ae5a4c769bbfd08c89fa407569ec1cc[m
+Author: aaansari20199 <125266230+aaansari20199@users.noreply.github.com>
+Date:   Tue Apr 11 11:59:26 2023 +0530
+
+    Reports completed in RTI Module.
+
+[33mcommit 3280bc9fe9c67e800b41d11cd6f341b49fdd53f9[m
+Author: Shivani <ShivaniCbo@smarttouchindia.in>
+Date:   Tue Apr 11 11:54:06 2023 +0530
+
+    Shivani- bsup (New scheme application)
+
+[33mcommit b0c48475b70980c476ecfbc558a77a16ace50539[m
+Author: AshishDahale <ashishdahale999@gmail.com>
+Date:   Tue Apr 11 11:45:38 2023 +0530
+
+    gg
+
+[33mcommit e99ad166712878041768e9317bf710285e679918[m
+Author: AshishDahale <ashishdahale999@gmail.com>
+Date:   Tue Apr 11 02:29:53 2023 +0530
+
+    nrms labels updated for press note release
+
+[33mcommit 31947af7f526f244c74e1ce2ebb7b92e55302caf[m
+Author: AshishDahale <ashishdahale999@gmail.com>
+Date:   Tue Apr 11 02:27:52 2023 +0530
+
+    gg
+
+[33mcommit cefbfb6c24a71194bc8b12828142578044e8be81[m
+Author: Sagar Deshmukh <sagar.deshmukh@versatalialabs.com>
+Date:   Tue Apr 11 00:22:39 2023 +0530
+
+    SLB - marriage zone ward mapping used
+
+[33mcommit d57e0d92d4b74aaaf673af54d86e10cc6fda3d4d[m
+Author: IceCYrip <karansable16@gmail.com>
+Date:   Mon Apr 10 20:39:05 2023 +0530
+
+    validations applied for payment gateway fields
+
+[33mcommit 004aaca1e65aea0af17a05c3f47892da47209d75[m
+Author: IceCYrip <karansable16@gmail.com>
+Date:   Mon Apr 10 20:21:37 2023 +0530
+
+    vms changes for reports done
+
+[33mcommit 8cce986c3cc2b33c24144e9cc11abe39ddbc3d19[m
+Merge: 14620b3c 27c85686
+Author: IceCYrip <karansable16@gmail.com>
+Date:   Mon Apr 10 19:46:41 2023 +0530
+
+    Merge branch 'main' of https://github.com/Techlead-India/pcmc-front-end
+
+[33mcommit 14620b3c64642f911e26848f462c6c4b1312d98a[m
+Author: IceCYrip <karansable16@gmail.com>
+Date:   Mon Apr 10 19:46:36 2023 +0530
+
+    major vms final changes done
+
+[33mcommit 27c85686e21147f968a1d85ce0b3629c04d14f10[m
+Merge: 83809a95 736a41a4
+Author: swapnilwaghulde95 <47075853+swapnilwaghulde95@users.noreply.github.com>
+Date:   Mon Apr 10 19:45:47 2023 +0530
+
+    Merge branch 'main' of https://github.com/Techlead-India/pcmc-front-end
+
+[33mcommit 83809a95648c4d0993f209db958df3bfdf989c76[m
+Author: swapnilwaghulde95 <47075853+swapnilwaghulde95@users.noreply.github.com>
+Date:   Mon Apr 10 19:45:32 2023 +0530
+
+    NRMS
+
+[33mcommit 736a41a49403674f01c91100334abd99b81393de[m
+Merge: 168b45cf 8032616b
+Author: Sarthak Bhale <sarthak.probity@gmail.com>
+Date:   Mon Apr 10 19:43:32 2023 +0530
+
+    Merge branch 'main' of https://github.com/Techlead-India/pcmc-front-end
+
+[33mcommit 168b45cf9b85935d5843eca60d19b9407fb94129[m
+Author: Sarthak Bhale <sarthak.probity@gmail.com>
+Date:   Mon Apr 10 19:43:08 2023 +0530
+
+    lms
+    
+    LMS Fixes
+
+[33mcommit 8032616b3287f42624645cea42cc7d2bafdec12f[m
+Merge: 9077612c 7ab4e996
+Author: sachinD2205 <sachindurge2205@gmail.com>
+Date:   Mon Apr 10 19:42:09 2023 +0530
+
+    Merge branch 'main' of https://github.com/Techlead-India/pcmc-front-end
+
+[33mcommit 9077612c3d2e1c7862c4f6f657b8c767c3df9fbf[m
+Author: sachinD2205 <sachindurge2205@gmail.com>
+Date:   Mon Apr 10 19:41:59 2023 +0530
+
+    license Validity
+
+[33mcommit 7ab4e996959ae06e55001ba66304f33c4b3e236f[m
+Merge: 2da51a4d 39b9e5d9
+Author: vishalbibe <vishal@etechtracker.com>
+Date:   Mon Apr 10 19:37:20 2023 +0530
+
+    Merge branch 'main' of https://github.com/Techlead-India/pcmc-front-end
+
+[33mcommit 2da51a4d7a3ebc51220a31ee685dbfbd2faf3506[m
+Author: vishalbibe <vishal@etechtracker.com>
+Date:   Mon Apr 10 19:37:12 2023 +0530
+
+    school-AdminUserRole&Refactor
+
+[33mcommit 39b9e5d910b90e547c8599557fddf2ab69bce6cb[m
+Author: PratikshaKadam2999 <pratiksha@Upperthrust.com>
+Date:   Mon Apr 10 19:17:48 2023 +0530
+
+    "cfcMaster"
+
+[33mcommit f8c190c11ba554631aa9972a8362f422c0bae0a2[m
+Author: sachinD2205 <sachindurge2205@gmail.com>
+Date:   Mon Apr 10 18:30:57 2023 +0530
+
+    my applications
+
+[33mcommit 6eb6e6665a3aede031768f7643e4385cc2fb29af[m
+Merge: 16c732fc b663f989
+Author: sachinD2205 <sachindurge2205@gmail.com>
+Date:   Mon Apr 10 18:29:50 2023 +0530
+
+    Merge branch 'main' of https://github.com/Techlead-India/pcmc-front-end
+
+[33mcommit 16c732fcb6a103f762e77742dde9c570826be41b[m
+Author: sachinD2205 <sachindurge2205@gmail.com>
+Date:   Mon Apr 10 18:29:37 2023 +0530
+
+    ds
+
+[33mcommit b663f989ef0f48a560c82989c7c32fbbcfaa64fb[m
+Merge: 0e97bbdd eaf193b9
+Author: IceCYrip <karansable16@gmail.com>
+Date:   Mon Apr 10 18:26:37 2023 +0530
+
+    Merge branch 'main' of https://github.com/Techlead-India/pcmc-front-end
+
+[33mcommit 0e97bbdd2e0f93fa132581aa2acfc2059e7c687f[m
+Author: IceCYrip <karansable16@gmail.com>
+Date:   Mon Apr 10 18:22:47 2023 +0530
+
+    merged branch
+
+[33mcommit aa2a36c3cfca23a13e1be2e2a641ec100eafd4af[m
+Author: IceCYrip <karansable16@gmail.com>
+Date:   Mon Apr 10 18:16:57 2023 +0530
+
+    VMS final changes
+
+[33mcommit eaf193b90dda9dafe370886b6136500d79e4801f[m
+Merge: 2e258e35 576428c2
+Author: Sagar Deshmukh <sagar.deshmukh@versatalialabs.com>
+Date:   Mon Apr 10 18:15:56 2023 +0530
+
+    Merge branch 'main' of https://github.com/Techlead-India/pcmc-front-end into main
+
+[33mcommit 2e258e3517b77091b1caad68db4e8e995bb6c9ba[m
+Author: Sagar Deshmukh <sagar.deshmukh@versatalialabs.com>
+Date:   Mon Apr 10 18:15:48 2023 +0530
+
+    Parameter and dashboard changes done
+
+[33mcommit 576428c2dde6d7ae8defe3d440b76745c7c1352a[m
+Author: Shivani <ShivaniCbo@smarttouchindia.in>
+Date:   Mon Apr 10 16:42:27 2023 +0530
+
+    Shivani-RTI Appeal changes committed
+
+[33mcommit b6085b205b2c51c8394fd9af9032cba5246b387f[m
+Author: vishalbibe <vishal@etechtracker.com>
+Date:   Mon Apr 10 16:31:46 2023 +0530
+
+    "sms"
+
+[33mcommit db60ec75237c19964096ef1224540f39c81b9262[m
+Merge: 04dc35d2 e2891ea9
+Author: aaansari20199 <125266230+aaansari20199@users.noreply.github.com>
+Date:   Mon Apr 10 15:48:20 2023 +0530
+
+    Merge branch 'main' of https://github.com/Techlead-India/pcmc-front-end
+
+[33mcommit 04dc35d2fe061e759849f563643e3f3cbf327a2d[m
+Author: aaansari20199 <125266230+aaansari20199@users.noreply.github.com>
+Date:   Mon Apr 10 15:48:13 2023 +0530
+
+    Grievance Labels, and 2 Rti Reports are completed.
+
+[33mcommit e2891ea969f6cfb7e5da34e57cc8c6c2aa41cd03[m
+Author: sachinD2205 <sachindurge2205@gmail.com>
+Date:   Mon Apr 10 15:34:07 2023 +0530
+
+    uploadButton
+
+[33mcommit a9c84b931490d274435f6baf09a3c85e82a7396a[m
+Merge: 4df47710 a2727ef2
+Author: sachinD2205 <sachindurge2205@gmail.com>
+Date:   Mon Apr 10 15:05:28 2023 +0530
+
+    Merge branch 'main' of https://github.com/Techlead-India/pcmc-front-end
+
+[33mcommit 4df47710d9c2e064c1c2f28d00e381a8c5409943[m
+Author: sachinD2205 <sachindurge2205@gmail.com>
+Date:   Mon Apr 10 15:03:19 2023 +0530
+
+    hms
+
+[33mcommit a2727ef2371a84356adefff23647575a58361347[m
+Author: Tejashri Kshirsagar <Tejashri@upperthrust.com>
+Date:   Mon Apr 10 14:38:16 2023 +0530
+
+    resolved deployment error of slum
+
+[3

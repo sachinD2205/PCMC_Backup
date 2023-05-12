@@ -1,0 +1,60 @@
+.main {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  /* width: 100vw; */
+  /* height: 100vh; */
+  justify-content: center;
+  align-items: center;
+}
+
+.printMain {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  height: 85vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.tables {
+  width: 65vw;
+  height: 70vh;
+  background-color: white;
+}
+
+.tables tr th {
+  border: 1px solid black;
+}
+
+.tables td {
+  border: 1px solid black;
+  padding-left: 1vw;
+}
+
+.tables thead {
+  border: 1px solid black;
+}
+
+.hpartplan {
+  font-size: 25px;
+}
+
+.toprow {
+  text-align: left;
+  padding-left: 1vw;
+}
+
+.toprow th {
+  padding-left: 1vw;
+}
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+ Table end +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- */
+
+.buttons {
+  width: 65vw;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 5vh;
+  margin-bottom: 2vh;
+}
