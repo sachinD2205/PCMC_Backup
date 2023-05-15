@@ -1,0 +1,853 @@
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+import { ThemeProvider } from "@emotion/react";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormHelperText,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  TextField,
+} from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import React, { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import FormattedLabel from "../../../../containers/reuseableComponents/FormattedLabel";
+import theme from "../../../../theme";
+import sweetAlert from "sweetalert";
+import styles from "./view.module.css";
+import ClearIcon from "@mui/icons-material/Clear";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import urls from "../../../../URLS/urls";
+import moment from "moment";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import CircularProgress from "@mui/material/CircularProgress";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import DownloadIcon from "@mui/icons-material/Download";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+
+const Index = () => {
+  const {
+    register,
+    control,
+    handleSubmit,
+    reset,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    // criteriaMode: "all",
+    // resolver: yupResolver(Schema),
+    // mode: "onSubmit",
+  });
+  const [data, setData] = useState([]);
+  const [wardDropDown, setWardDropDown] = useState([]);
+  const [zoneDropDown, setZoneDropDown] = useState([]);
+  const [departmentDropDown, setDepartmentDropDown] = useState([]);
+  const [phaseTypeDropDown, setPhaseTypeDropDown] = useState([]);
+  const [loadEquipementCapacityDropDown, setLoadEquipementCapacityDropDown] = useState([]);
+  const [loadEquipementDetailsDropDown, setLoadEquipementDetailsDropDown] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+
+  const language = useSelector((store) => store.labels.language);
+
+  useEffect(() => {
+      getZoneData();
+      getWardData();
+      getDepartmentData();
+      getPhaseTypeData();
+     getLoadEquipementCapacity();
+     getLoadEquipementDetails();
+  },[])
+
+  useEffect(()=>{
+    if(watch('department') && watch('zone'))
+    {
+      getZoneWiseWard();
+    }
+  },[watch('department') && watch('zone')])
+
+  const getZoneData = () => {
+    axios.get(`${urls.CFCURL}/master/zone/getAll`).then((res) => {
+      setZoneDropDown(res.data.zone);
+      console.log("getZone.data", res.data);
+    });
+  }
+
+  const getWardData = () => {
+    axios.get(`${urls.CFCURL}/master/ward/getAll`).then((res) => {
+      setWardDropDown(res.data.ward);
+      console.log("getWard.data", res.data);
+    });
+  }
+
+  const getDepartmentData = () => {
+    axios.get(`${urls.CFCURL}/master/department/getAll`).then((r) => {
+      setDepartmentDropDown(
+        r.data.department.map((row) => ({
+          id: row.id,
+          department: row.department,
+        })),
+      );
+      console.log("res.data", r.data);
+    });
+  }
+
+  const getPhaseTypeData = () => {
+    axios.get(`${urls.EBPSURL}/mstPhaseType/getAll`).then((res) => {
+      setPhaseTypeDropDown(res.data.mstPhaseTypeList);
+      console.log("getPhaseType.data", res.data);
+    });
+  }
+
+  const getLoadEquipementCapacity = () => {
+    axios.get(`${urls.EBPSURL}/mstLoadEquipmentCapacity/getAll`).then((res) => {
+      setLoadEquipementCapacityDropDown(res.data.mstLoadEquipmentCapacityList);
+      console.log("getLoadEquipementCapacity.data", res.data);
+    });
+  }
+
+  const getLoadEquipementDetails = () => {
+    axios.get(`${urls.EBPSURL}/mstLoadEquipmentDetails/getAll`).then((res) => {
+      setLoadEquipementDetailsDropDown(res.data.mstLoadEquipmentDetailsList);
+      console.log("getLoadType.data", res.data);
+    });
+  }
+
+  let resetValuesCancell = {
+    fromDate: null,
+    toDate: null,
+    consumerNo: "",
+  };
+
+  let onCancel = () => {
+    reset({
+      ...resetValuesCancell,
+    });
+  };
+
+  const onSubmitFunc = (formData) => {
+    console.log("formData",formData)
+    delete formData.fromDate;
+    delete formData.toDate;
+    if (watch("fromDate") && watch("toDate")) {
+      // alert("onSubmitFunc");
+      let sendFromDate = moment(watch("fromDate")).format("YYYY-MM-DD hh:mm:ss");
+      let sendToDate = moment(watch("toDate")).format("YYYY-MM-DD hh:mm:ss");
+
+      let apiBodyToSend = {
+        strFromDate: sendFromDate,
+        strToDate: sendToDate,
+        consumerNo: watch("consumerNo") ? watch("consumerNo") : null,
+        ward: watch("ward") ? watch("ward") : null,
+        zone: watch("zone") ? watch("zone") : null,
+        department: watch("department") ? watch("department") : null,
+        phase: watch("phase") ? watch("phase") : null,
+      };
+
+    console.log("apiBodyToSend",apiBodyToSend)
+
+      ///////////////////////////////////////////
+      setLoading(true);
+      axios
+        .post(`${urls.EBPSURL}/report/getDateWiseLoadDetails`, apiBodyToSend)
+        .then((res) => {
+          console.log(":log", res);
+          if (res?.status === 200 || res?.status === 201) {
+            if (res?.data.length > 0) {
+              setData(
+                res?.data?.map((r, i) => ({
+                  id: i + 1,
+                  // srNo: i + 1,
+                  consumerNo: r.connsumerNo,
+                  consumerName: r.consumerName,
+                  consumerNameMr: r.consumerNameMr,
+                  zoneName: !(zoneDropDown?.find((obj) => { return obj.id == r?.zoneKey })) ? "-" : zoneDropDown.find((obj) => { return obj.id == r?.zoneKey }).zoneName,
+                  zoneNameMr: !(zoneDropDown?.find((obj) => { return obj.id == r?.zoneKey })) ? "-" : zoneDropDown.find((obj) => { return obj.id == r?.zoneKey }).zoneNameMr,
+                  wardName: !(wardDropDown?.find((obj) => { return obj.id == r?.wardKey })) ? "-" : wardDropDown.find((obj) => { return obj.id == r?.wardKey }).wardName,
+                  wardNameMr: !(wardDropDown?.find((obj) => { return obj.id == r?.wardKey })) ? "-" : wardDropDown.find((obj) => { return obj.id == r?.wardKey }).wardNameMr,
+                  phaseType: !(phaseTypeDropDown?.find((obj) => { return obj.id == r?.phaseTypeKey })) ? "-" : phaseTypeDropDown.find((obj) => { return obj.id == r?.phaseTypeKey }).phaseType,
+                  phaseTypeMr: !(phaseTypeDropDown?.find((obj) => { return obj.id == r?.phaseTypeKey })) ? "-" : phaseTypeDropDown.find((obj) => { return obj.id == r?.phaseTypeKey }).phaseTypeMr,
+                  meterNo: r.meterNo,
+                })),
+              );
+              setLoading(false);
+            } else {
+              sweetAlert({
+                title: "Oops!",
+                text: "There is nothing to show you!",
+                icon: "warning",
+                // buttons: ["No", "Yes"],
+                dangerMode: false,
+                closeOnClickOutside: false,
+              });
+              setData([]);
+              setLoading(false);
+            }
+          } else {
+            setData([]);
+            sweetAlert("Something Went Wrong!");
+            setLoading(false);
+          }
+        })
+        .catch((error) => {
+          setData([]);
+          sweetAlert(error);
+          setLoading(false);
+        });
+    } else {
+      sweetAlert({
+        title: "Oops!",
+        text: "All Three Values Are Required!",
+        icon: "warning",
+        // buttons: ["No", "Yes"],
+        dangerMode: false,
+        closeOnClickOutside: false,
+      });
+      setData([]);
+    }
+  };
+
+  const columns = [
+    {
+      field: "id",
+      headerName: <FormattedLabel id="srNo" />,
+      minWidth: 60,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "consumerNo",
+      headerName: <FormattedLabel id="consumerNo" />,
+      minWidth: 230,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: language == "en" ? "consumerName" : "consumerNameMr" ,
+      headerName: <FormattedLabel id="consumerName" />,
+      minWidth: 250,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: language == "en" ? "zoneName" : "zoneNameMr" ,
+      headerName: <FormattedLabel id="zone" />,
+      minWidth: 250,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: language == "en" ? "wardName" : "wardNameMr" ,
+      headerName: <FormattedLabel id="ward" />,
+      minWidth: 250,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: language == "en" ? "phaseType" : "phaseTypeMr" ,
+      headerName: <FormattedLabel id="phaseType" />,
+      minWidth: 230,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "meterNo",
+      headerName: <FormattedLabel id="meterNo" />,
+      minWidth: 250,
+      headerAlign: "center",
+      align: "center",
+    },
+    // {
+    //   field: "capacity",
+    //   headerName: <FormattedLabel id="loadEquipementCapacity" />,
+    //   minWidth: 230,
+    //   headerAlign: "center",
+    //   align: "center",
+    // },
+  ];
+
+  /////////////// EXCEL DOWNLOAD ////////////
+  function generateCSVFile(data) {
+    console.log(":generateCSVFile", data);
+
+    const csv = [
+      columns
+        .map((c) => c.headerName)
+        .map((obj) => obj?.props?.id)
+        .join(","),
+      ...data.map((d) => columns.map((c) => d[c.field]).join(",")),
+    ].join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const downloadLink = document.createElement("a");
+    downloadLink.href = url;
+    // downloadLink.download = "data.csv";
+    downloadLink.download = "data.csv";
+    downloadLink.click();
+    URL.revokeObjectURL(url);
+  }
+
+  ///////////////////////////////////////////
+
+  function generatePDF(data) {
+    const columnsData = columns.map((c) => c.headerName).map((obj) => obj?.props?.id);
+    const rowsData = data.map((row) => columns.map((col) => row[col.field]));
+    console.log(
+      ":45",
+      columns.map((c) => c.headerName).map((obj) => obj),
+    );
+    const doc = new jsPDF();
+    doc.autoTable({
+      head: [columnsData],
+      body: rowsData,
+    });
+    doc.save("datagrid.pdf");
+  }
+
+  return (
+    <ThemeProvider theme={theme}>
+      <Paper
+        style={{
+          margin: "30px",
+        }}
+      >
+        <Box
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "1%",
+          }}
+        >
+          <Box
+            className={styles.details1}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "98%",
+              height: "auto",
+              overflow: "auto",
+              padding: "0.5%",
+              color: "black",
+              fontSize: 19,
+              fontWeight: 500,
+              // borderRadius: 100,
+            }}
+          >
+            <strong className={styles.fancy_link1}>
+              <FormattedLabel id="loadDetailsReport" />
+            </strong>
+          </Box>
+        </Box>
+        {/* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
+        <Box
+          style={{
+            padding: "10px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Paper elevation={3} style={{ margin: "10px", width: "80%" }}>
+            <form onSubmit={handleSubmit(onSubmitFunc)}>
+              <Grid
+                container
+                spacing={2}
+                style={{
+                  padding: "10px",
+                  display: "flex",
+                  justifyContent: "space-around",
+                  alignItems: "baseline",
+                }}
+              >
+                {/* From Date */}
+            <Grid item xs={12} sm={6} md={6} lg={4} xl={4} sx={{ display: "flex", justifyContent: "center"}}>
+            <FormControl style={{ backgroundColor: "white", marginLeft: "30px" }}  error={!!errors.fromDate}>
+                    <Controller
+                      control={control}
+                      name="fromDate"
+                      defaultValue={null}
+                      render={({ field }) => (
+                        <LocalizationProvider dateAdapter={AdapterMoment}>
+                          <DatePicker
+                            inputFormat="DD/MM/YYYY"
+                            label={
+                              <span style={{ fontSize: 16 }}>
+                                <FormattedLabel id="fromDate" required/>
+                              </span>
+                            }
+                            value={field.value || null}
+                            onChange={(date) => field.onChange(date)}
+                            selected={field.value}
+                            center
+                            disableFuture
+                            renderInput={(params) => (
+                              <TextField {...params} size="small" fullWidth variant="standard" />
+                            )}
+                          />
+                        </LocalizationProvider>
+                      )}
+                    />
+                    <FormHelperText>{errors?.fromDate ? errors.fromDate.message : null}</FormHelperText>
+                  </FormControl>
+            </Grid>
+
+            {/* To Date */}
+            <Grid item xs={12} sm={6} md={6} lg={4} xl={4} sx={{ display: "flex", justifyContent: "center" }}>
+            <FormControl style={{ backgroundColor: "white", marginLeft: "30px" }} error={!!errors.toDate}>
+                    <Controller
+                      control={control}
+                      name="toDate"
+                      defaultValue={null}
+                      render={({ field }) => (
+                        <LocalizationProvider dateAdapter={AdapterMoment}>
+                          <DatePicker
+                            inputFormat="DD/MM/YYYY"
+                            label={
+                              <span style={{ fontSize: 16 }}>
+                                <FormattedLabel id="toDate" required/>
+                              </span>
+                            }
+                            value={field.value || null}
+                            onChange={(date) => field.onChange(date)}
+                            selected={field.value}
+                            center
+                            minDate={watch('fromDate')}
+                            disableFuture
+                            renderInput={(params) => (
+                              <TextField {...params} size="small" fullWidth variant="standard" />
+                            )}
+                          />
+                        </LocalizationProvider>
+                      )}
+                    />
+                    <FormHelperText>{errors?.toDate ? errors.toDate.message : null}</FormHelperText>
+                  </FormControl>
+            </Grid>
+
+            {/* Consumer No */}
+            <Grid item xs={12} sm={6} md={6} lg={4} xl={4} sx={{ display: "flex", justifyContent: "center" }}>
+              <TextField
+              type="number"
+                sx={{ width: "70%" }}
+                id="standard-basic"
+                label={<FormattedLabel id="consumerNo" />}
+                variant="standard"
+                InputLabelProps={{ shrink: watch('consumerNo') ? true : false }}
+                {...register("consumerNo")}
+                error={!!errors.consumerNo}
+                helperText={errors?.consumerNo ? errors.consumerNo.message : null}
+              />
+            </Grid>
+
+            
+            {/* department */}
+            <Grid item xs={12} sm={6} md={6} lg={4} xl={4} sx={{ display: "flex", justifyContent: "center" }}>
+              <FormControl
+                // variant="outlined"
+                variant="standard"
+                size="small"
+                sx={{ m: 1, minWidth: "50%" }}
+                error={!!errors.department}
+              >
+                <InputLabel id="demo-simple-select-standard-label">{<FormattedLabel id="deptName" />}</InputLabel>
+                <Controller
+                  render={({ field }) => (
+                    <Select
+                      // sx={{ width: 200 }}
+                      value={field.value}
+                      {...register("department")}
+                      label={<FormattedLabel id="deptName" />}
+                      // InputLabelProps={{
+                      //   //true
+                      //   shrink:
+                      //     (watch("officeLocation") ? true : false) ||
+                      //     (router.query.officeLocation ? true : false),
+                      // }}
+                    >
+                      {departmentDropDown &&
+                        departmentDropDown.map((each, index) => (
+                          <MenuItem key={index} value={each.id}>
+                            {language == "en" ? each.department : each.departmentMr}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                  )}
+                  name="department"
+                  control={control}
+                  defaultValue=""
+                />
+                <FormHelperText>{errors?.department ? errors.department.message : null}</FormHelperText>
+              </FormControl>
+            </Grid>
+
+            {/* zone */}
+            <Grid item xs={12} sm={6} md={6} lg={4} xl={4} sx={{ display: "flex", justifyContent: "center" }}>
+              <FormControl
+                // variant="outlined"
+                variant="standard"
+                size="small"
+                sx={{ m: 1, minWidth: "50%" }}
+                error={!!errors.zone}
+              >
+                <InputLabel id="demo-simple-select-standard-label">{<FormattedLabel id="zone" />}</InputLabel>
+                <Controller
+                  render={({ field }) => (
+                    <Select
+                      // sx={{ width: 200 }}
+                      value={field.value}
+                      {...register("zone")}
+                      label={<FormattedLabel id="zone" />}
+                      // InputLabelProps={{
+                      //   //true
+                      //   shrink:
+                      //     (watch("officeLocation") ? true : false) ||
+                      //     (router.query.officeLocation ? true : false),
+                      // }}
+                    >
+                      {zoneDropDown &&
+                        zoneDropDown.map((each, index) => (
+                          <MenuItem key={index} value={each.id}>
+                          {language == "en" ? each.zoneName : each.zoneNameMr}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                  )}
+                  name="zone"
+                  control={control}
+                  defaultValue=""
+                />
+                <FormHelperText>{errors?.zone ? errors.zone.message : null}</FormHelperText>
+              </FormControl>
+            </Grid>
+
+            {/* Ward */}
+            <Grid item xs={12} sm={6} md={6} lg={4} xl={4} sx={{ display: "flex", justifyContent: "center" }}>
+              <FormControl
+                // variant="outlined"
+                variant="standard"
+                size="small"
+                sx={{ m: 1, minWidth: "50%" }}
+                error={!!errors.ward}
+              >
+                <InputLabel id="demo-simple-select-standard-label">{<FormattedLabel id="ward" />}</InputLabel>
+                <Controller
+                  render={({ field }) => (
+                    <Select
+                      // sx={{ width: 200 }}
+                      value={field.value}
+                      {...register("ward")}
+                      label={<FormattedLabel id="ward" />}
+                      // InputLabelProps={{
+                      //   //true
+                      //   shrink:
+                      //     (watch("officeLocation") ? true : false) ||
+                      //     (router.query.officeLocation ? true : false),
+                      // }}
+                    >
+                      {wardDropDown &&
+                        wardDropDown.map((each, index) => (
+                          <MenuItem key={index} value={each.id}>
+                           {language == "en" ? each.wardName : each.wardNameMr}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                  )}
+                  name="ward"
+                  control={control}
+                  defaultValue=""
+                />
+                <FormHelperText>{errors?.ward ? errors.ward.message : null}</FormHelperText>
+              </FormControl>
+            </Grid>
+
+
+            {/* phaseType */}
+            <Grid item xs={12} sm={6} md={6} lg={4} xl={4} sx={{ display: "flex", justifyContent: "center" }}>
+              <FormControl
+                // variant="outlined"
+                variant="standard"
+                size="small"
+                sx={{ m: 1, minWidth: "50%" }}
+                error={!!errors.phase}
+              >
+                <InputLabel id="demo-simple-select-standard-label">{<FormattedLabel id="phaseType" />}</InputLabel>
+                <Controller
+                  render={({ field }) => (
+                    <Select
+                      // sx={{ width: 200 }}
+                      value={field.value}
+                      {...register("phase")}
+                      label={<FormattedLabel id="phaseType" />}
+                      // InputLabelProps={{
+                      //   //true
+                      //   shrink:
+                      //     (watch("officeLocation") ? true : false) ||
+                      //     (router.query.officeLocation ? true : false),
+                      // }}
+                    >
+                      {phaseTypeDropDown &&
+                        phaseTypeDropDown.map((each, index) => (
+                          <MenuItem key={index} value={each.id}>
+                            {language == "en" ? each.phaseType : each.phaseTypeMr}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                  )}
+                  name="phase"
+                  control={control}
+                  defaultValue=""
+                />
+                <FormHelperText>{errors?.phase ? errors.phase.message : null}</FormHelperText>
+              </FormControl>
+            </Grid>
+
+            {/* load equipement capacity */}
+            <Grid item xs={12} sm={6} md={6} lg={4} xl={4} sx={{ display: "flex", justifyContent: "center" }}>
+              <FormControl
+                // variant="outlined"
+                variant="standard"
+                size="small"
+                sx={{ m: 1, minWidth: "50%" }}
+                error={!!errors.loadEquipementCapacity}
+              >
+                <InputLabel id="demo-simple-select-standard-label">{<FormattedLabel id="loadEquipementCapacity" />}</InputLabel>
+                <Controller
+                  render={({ field }) => (
+                    <Select
+                      value={field.value}
+                      {...register("loadEquipementCapacity")}
+                      label={<FormattedLabel id="loadEquipementCapacity" />}
+                    >
+                      {loadEquipementCapacityDropDown &&
+                        loadEquipementCapacityDropDown.map((each, index) => (
+                          <MenuItem key={index} value={each.id}>
+                            {language === "en" ? each.loadEquipmentCapacity : each.loadEquipmentCapacityMr}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                  )}
+                  name="loadEquipementCapacity"
+                  control={control}
+                  defaultValue=""
+                />
+                <FormHelperText>{errors?.loadEquipementCapacity ? errors.loadEquipementCapacity.message : null}</FormHelperText>
+              </FormControl>
+            </Grid>
+
+             {/* load equipement details */}
+             <Grid item xs={12} sm={6} md={6} lg={4} xl={4} sx={{ display: "flex", justifyContent: "center" }}>
+              <FormControl
+                variant="standard"
+                size="small"
+                sx={{ m: 1, minWidth: "50%" }}
+                error={!!errors.loadEquipementDetails}
+              >
+                <InputLabel id="demo-simple-select-standard-label">{<FormattedLabel id="loadEquipmentDetails" />}</InputLabel>
+                <Controller
+                  render={({ field }) => (
+                    <Select
+                      value={field.value}
+                      {...register("loadEquipementDetails")}
+                      label={<FormattedLabel id="loadEquipmentDetails" />}
+                  
+                    >
+                      {loadEquipementDetailsDropDown &&
+                        loadEquipementDetailsDropDown.map((each, index) => (
+                          <MenuItem key={index} value={each.id}>
+                            {language === "en" ? each.equipmentDetails : each.equipmentDetailsMr}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                  )}
+                  name="loadEquipementDetails"
+                  control={control}
+                  defaultValue=""
+                />
+                <FormHelperText>{errors?.loadEquipementDetails ? errors.loadEquipementDetails.message : null}</FormHelperText>
+              </FormControl>
+            </Grid>
+
+              </Grid>
+
+              {/* ////////////////////////////// */}
+
+              <Grid
+                container
+                // spacing={2}
+                style={{
+                  padding: "10px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "baseline",
+                }}
+              >
+                {/* ///////////////////// */}
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Paper elevation={4} style={{ margin: "30px", width: "auto" }}>
+                    <Button type="submit" variant="contained"   disabled={watch("fromDate") == null || watch("toDate") == null} color="success" endIcon={<ArrowUpwardIcon />}>
+                      {<FormattedLabel id="submit" />}
+                    </Button>
+                  </Paper>
+                </Grid>
+
+               
+                {/* ///////////////////////////////////////////// */}
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Paper elevation={4} style={{ margin: "30px", width: "auto" }}>
+                    <Button
+                      disabled={data?.length > 0 ? false : true}
+                      type="button"
+                      variant="contained"
+                      color="success"
+                      endIcon={<DownloadIcon />}
+                      onClick={() => generateCSVFile(data)}
+                    >
+                      {<FormattedLabel id="downloadEXCELL" />}
+                    </Button>
+                  </Paper>
+                </Grid>
+                {/* ////////////////////////////// */}
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Paper elevation={4} style={{ margin: "30px", width: "auto" }}>
+                    <Button
+                      disabled={data?.length > 0 ? false : true}
+                      type="button"
+                      variant="contained"
+                      color="success"
+                      endIcon={<DownloadIcon />}
+                      onClick={() => generatePDF(data)}
+                    >
+                      {<FormattedLabel id="downloadPDF" />}
+                    </Button>
+                  </Paper>
+                </Grid>
+
+                {/* //////////////////////////////////// */}
+
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Paper elevation={4} style={{ margin: "30px", width: "auto" }}>
+                    <Button
+                      // sx={{ marginRight: 8 }}
+                      type="button"
+                      variant="contained"
+                      color="primary"
+                      endIcon={<ClearIcon />}
+                      onClick={onCancel}
+                    >
+                      {<FormattedLabel id="cancel" />}
+                    </Button>
+                  </Paper>
+                </Grid>
+              </Grid>
+            </form>
+          </Paper>
+          {loading ? (
+            <CircularProgress color="success" />
+          ) : data.length !== 0 ? (
+            <div style={{ width: "100%" }}>
+              <DataGrid
+                autoHeight
+                sx={{
+                  overflowY: "scroll",
+                  "& .MuiDataGrid-virtualScrollerContent": {
+                    // backgroundColor:'red',
+                    // height: '800px !important',
+                    // display: "flex",
+                    // flexDirection: "column-reverse",
+                    // overflow:'auto !important'
+                  },
+                  "& .MuiDataGrid-columnHeadersInner": {
+                    backgroundColor: "#556CD6",
+                    color: "white",
+                  },
+
+                  "& .MuiDataGrid-cell:hover": {
+                    color: "primary.main",
+                  },
+                }}
+                // disableColumnFilter
+                // disableColumnSelector
+                // disableDensitySelector
+                components={{ Toolbar: GridToolbar }}
+                componentsProps={{
+                  toolbar: {
+                    showQuickFilter: true,
+                    quickFilterProps: { debounceMs: 0 },
+                    disableExport: true,
+                    disableToolbarButton: false,
+                    csvOptions: { disableToolbarButton: false },
+                    printOptions: { disableToolbarButton: true },
+                  },
+                }}
+                rows={data ? data : []}
+                columns={columns}
+                density="standard"
+                pageSize={10}
+                rowsPerPageOptions={[10]}
+                disableSelectionOnClick
+              />
+            </div>
+          ) : (
+            ""
+          )}
+        </Box>
+      </Paper>
+    </ThemeProvider>
+  );
+};
+
+export default Index;
+
+
